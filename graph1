@@ -1,0 +1,49 @@
+import matplotlib.pyplot as plt
+from IPython.display import display
+import ipywidgets as widgets
+import numpy as np
+
+def plot_quadratic(a, b, c):
+    x_values = np.linspace(-10, 10, 400)
+    y_values = a * x_values**2 + b * x_values + c
+
+    fig, ax = plt.subplots()
+    ax.plot(x_values, y_values, label=f'{a}x^2 + {b}x + {c}')
+    ax.axhline(0, color='black',linewidth=0.5)
+    ax.axvline(0, color='black',linewidth=0.5)
+    ax.grid(color = 'gray', linestyle = '--', linewidth = 0.5)
+    ax.set_title('Quadratic Equation Graph')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    
+
+
+    # Highlight the vertex
+    vertex_x = -b / (2 * a)
+    vertex_y = a * vertex_x**2 + b * vertex_x + c
+    ax.scatter([vertex_x], [vertex_y], color='red')
+    ax.legend()
+    plt.show()
+
+def on_button_click(b):
+    try:
+        a = float(entry_a.value)
+        b = float(entry_b.value)
+        c = float(entry_c.value)
+        plot_quadratic(a, b, c)
+    except ValueError:
+        error_label.value = "Please enter valid numbers for a, b, and c"
+
+# Create input widgets
+entry_a = widgets.FloatText(description='Coefficient a:')
+entry_b = widgets.FloatText(description='Coefficient b:')
+entry_c = widgets.FloatText(description='Coefficient c:')
+plot_button = widgets.Button(description='Plot Graph')
+error_label = widgets.Label()
+
+# Set up the button click event
+plot_button.on_click(on_button_click)
+
+# Display widgets
+display(entry_a, entry_b, entry_c, plot_button, error_label)
+
